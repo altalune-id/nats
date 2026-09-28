@@ -1,6 +1,6 @@
 # altalune-nats
 
-NATS JetStream image for altempl deployments: the official `nats` image, pinned by digest, with one
+NATS JetStream image for Altalune Go services built on the Altalune standard template: the official `nats` image, pinned by digest, with one
 config file. No secret lives in this repo; the token comes from the environment at start.
 
 ## Image
@@ -33,7 +33,7 @@ version exists.
 4. Private networking only: no public domain, no TCP proxy.
 5. Stop timeout about 20s.
 
-On the altempl service:
+On the Go service (Altalune template queue config):
 
 ```
 ALT_QUEUE_ENABLED=true
