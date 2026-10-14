@@ -8,25 +8,26 @@ password comes from the environment at start.
 
 `ghcr.io/altalune-id/nats`
 
-| Tag           | Built from          |
-| ------------- | ------------------- |
-| `edge`        | every push to main  |
-| `<short-sha>` | every push to main  |
-| `X.Y.Z`, `X.Y`| a `vX.Y.Z` git tag  |
+| Tag            | Built from         |
+| -------------- | ------------------ |
+| `edge`         | every push to main |
+| `<short-sha>`  | every push to main |
+| `X.Y.Z`, `X.Y` | a `vX.Y.Z` git tag |
 
 Base: `nats:2.15.0-alpine3.22` pinned by sha256. Dependabot opens a PR when a newer base or action
 version exists.
 
 ## Configuration
 
-| Setting                 | Value                                                              |
-| ----------------------- | ------------------------------------------------------------------ |
-| `ALTEMPL_NATS_PASSWORD` | required, at least 16 characters; user `altempl`, account ALTEMPL |
-| `OPENWA_NATS_PASSWORD`  | required, at least 16 characters; user `openwa`, account OPENWA   |
-| `YASAKU_NATS_PASSWORD`  | required, at least 16 characters; user `yasaku`, account YASAKU   |
-| client port             | 4222                                                               |
-| monitoring port         | 8222 (`/healthz?js-enabled-only=true`)                             |
-| JetStream storage       | `/data`, file store capped at 4G; each account capped at 1G        |
+| Setting                   | Value                                                                 |
+| ------------------------- | --------------------------------------------------------------------- |
+| `ALTEMPL_NATS_PASSWORD`   | required, at least 16 characters; user `altempl`, account ALTEMPL     |
+| `OPENSHEET_NATS_PASSWORD` | required, at least 16 characters; user `opensheet`, account OPENSHEET |
+| `OPENWA_NATS_PASSWORD`    | required, at least 16 characters; user `openwa`, account OPENWA       |
+| `YASAKU_NATS_PASSWORD`    | required, at least 16 characters; user `yasaku`, account YASAKU       |
+| client port               | 4222                                                                  |
+| monitoring port           | 8222 (`/healthz?js-enabled-only=true`)                                |
+| JetStream storage         | `/data`, file store capped at 5G; each account capped at 1G           |
 
 The server refuses to start while any password is unset, empty or shorter than 16 characters: NATS itself would accept an
 empty password as a valid login.
@@ -45,7 +46,7 @@ its account's quota when it creates its streams.
 ## Deploy (Railway)
 
 1. New service from image `ghcr.io/altalune-id/nats:<tag>`.
-2. Attach a volume at `/data`, at least 5 GB. Without it every redeploy drops queued jobs and the DLQ.
+2. Attach a volume at `/data`, at least 6 GB. Without it every redeploy drops queued jobs and the DLQ.
 3. Set every `<APP>_NATS_PASSWORD` to a long random string (`openssl rand -hex 32`).
 4. Private networking only: no public domain, no TCP proxy.
 5. Stop timeout about 20s.
