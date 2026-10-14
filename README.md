@@ -19,15 +19,16 @@ version exists.
 
 ## Configuration
 
-| Setting                   | Value                                                                 |
-| ------------------------- | --------------------------------------------------------------------- |
-| `ALTEMPL_NATS_PASSWORD`   | required, at least 16 characters; user `altempl`, account ALTEMPL     |
-| `OPENSHEET_NATS_PASSWORD` | required, at least 16 characters; user `opensheet`, account OPENSHEET |
-| `OPENWA_NATS_PASSWORD`    | required, at least 16 characters; user `openwa`, account OPENWA       |
-| `YASAKU_NATS_PASSWORD`    | required, at least 16 characters; user `yasaku`, account YASAKU       |
-| client port               | 4222                                                                  |
-| monitoring port           | 8222 (`/healthz?js-enabled-only=true`)                                |
-| JetStream storage         | `/data`, file store capped at 5G; each account capped at 1G           |
+| Setting                   | Value                                                                    |
+| ------------------------- | ------------------------------------------------------------------------ |
+| `ALTEMPL_NATS_PASSWORD`   | required, at least 16 characters; user `altempl`, account ALTEMPL        |
+| `OAGENT_NATS_PASSWORD`    | required, at least 16 characters; user `oagent`, account OAGENT          |
+| `OPENSHEET_NATS_PASSWORD` | required, at least 16 characters; user `opensheet`, account OPENSHEET    |
+| `OPENWA_NATS_PASSWORD`    | required, at least 16 characters; user `openwa`, account OPENWA          |
+| `YASAKU_NATS_PASSWORD`    | required, at least 16 characters; user `yasaku`, account YASAKU          |
+| client port               | 4222                                                                     |
+| monitoring port           | 8222 (`/healthz?js-enabled-only=true`)                                   |
+| JetStream storage         | `/data`, file store capped at 6G, memory at 96M; each account 1G and 16M |
 
 The server refuses to start while any password is unset, empty or shorter than 16 characters: NATS itself would accept an
 empty password as a valid login.
@@ -39,14 +40,15 @@ its account's quota when it creates its streams.
 ## Adding an app
 
 1. Add an account to `nats-server.conf` with its own `<APP>_NATS_PASSWORD`, `jetstream { max_file: 1G, max_mem: 16M }`, and
-   raise `max_file_store` if the accounts would exceed it.
+   raise `max_file_store` and `max_memory_store` if the accounts would exceed them: the server refuses to start when the
+   accounts reserve more memory than `max_memory_store` allows.
 2. Add the user to `users` in `scripts/smoke.sh`.
 3. Release, set the new variable on the NATS service, then redeploy it. Every app reconnects on its own after the restart.
 
 ## Deploy (Railway)
 
 1. New service from image `ghcr.io/altalune-id/nats:<tag>`.
-2. Attach a volume at `/data`, at least 6 GB. Without it every redeploy drops queued jobs and the DLQ.
+2. Attach a volume at `/data`, at least 7 GB. Without it every redeploy drops queued jobs and the DLQ.
 3. Set every `<APP>_NATS_PASSWORD` to a long random string (`openssl rand -hex 32`).
 4. Private networking only: no public domain, no TCP proxy.
 5. Stop timeout about 20s.

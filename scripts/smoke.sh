@@ -4,7 +4,7 @@ set -euo pipefail
 engine="${ENGINE:-docker}"
 image="${IMAGE:-altalune-nats:smoke}"
 name="altalune-nats-smoke-$$"
-users=(altempl opensheet openwa yasaku)
+users=(altempl oagent opensheet openwa yasaku)
 
 seed="$RANDOM$RANDOM$RANDOM$RANDOM"
 pw() { printf 'smoke-%s-%s' "$1" "$seed"; }
@@ -97,5 +97,6 @@ echo "==> delivers within one account"
 echo "==> isolates accounts"
 [ -z "$(cross_publish openwa altempl)" ] || fail "message crossed from altempl to openwa"
 [ -z "$(cross_publish opensheet yasaku)" ] || fail "message crossed from yasaku to opensheet"
+[ -z "$(cross_publish oagent opensheet)" ] || fail "message crossed from opensheet to oagent"
 
 echo "OK"
