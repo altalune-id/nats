@@ -25,6 +25,7 @@ version exists.
 | `OAGENT_NATS_PASSWORD`    | required, at least 16 characters; user `oagent`, account OAGENT          |
 | `OPENSHEET_NATS_PASSWORD` | required, at least 16 characters; user `opensheet`, account OPENSHEET    |
 | `OPENWA_NATS_PASSWORD`    | required, at least 16 characters; user `openwa`, account OPENWA          |
+| `OTHRA_NATS_PASSWORD`     | required, at least 16 characters; user `othra`, account OTHRA            |
 | `YASAKU_NATS_PASSWORD`    | required, at least 16 characters; user `yasaku`, account YASAKU          |
 | client port               | 4222                                                                     |
 | monitoring port           | 8222 (`/healthz?js-enabled-only=true`)                                   |
