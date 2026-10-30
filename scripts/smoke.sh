@@ -4,7 +4,7 @@ set -euo pipefail
 engine="${ENGINE:-docker}"
 image="${IMAGE:-altalune-nats:smoke}"
 name="altalune-nats-smoke-$$"
-users=(altempl oagent opensheet openwa yasaku)
+users=(altempl oagent opensheet openwa othra yasaku)
 
 seed="$RANDOM$RANDOM$RANDOM$RANDOM"
 pw() { printf 'smoke-%s-%s' "$1" "$seed"; }
