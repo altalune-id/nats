@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "altalune": {
+      "source": {
+        "source": "github",
+        "repo": "altalune-id/agent-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "alt-workflow@altalune": true
+  }
+}
